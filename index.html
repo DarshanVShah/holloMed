@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hollo Medical - Next Generation Inhaler Chambers</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Hollo Medical</div>
+            <ul class="nav-menu">
+                <li><a href="#updates">Updates</a></li>
+                <li><a href="#media">Media</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#contact" class="nav-cta">Join Waitlist</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="title-line">Developing the next</span>
+                <span class="title-line">generation of inhaler chambers</span>
+            </h1>
+            <p class="hero-subtitle">Just breathe, we'll take care of the rest</p>
+            <button class="cta-button">Subscribe for updates</button>
+        </div>
+        <div class="hero-visual">
+            <div class="product-showcase" id="product-showcase">
+                <!-- 3D model will be loaded here -->
+                <div class="product-placeholder">
+                    <div class="placeholder-content">
+                        <svg width="200" height="200" viewBox="0 0 200 200" fill="none">
+                            <rect x="50" y="50" width="100" height="150" rx="20" fill="url(#gradient)" opacity="0.3"/>
+                            <rect x="60" y="60" width="80" height="130" rx="15" fill="url(#gradient)" opacity="0.5"/>
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <p>3D Product Model</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission-section">
+        <div class="container">
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <h2 class="mission-title">Our mission</h2>
+                    <p class="mission-text">Hollo Medical was founded to reduce the burden of chronic respiratory diseases.</p>
+                </div>
+                <div class="mission-card">
+                    <h2 class="mission-title">How we do it</h2>
+                    <p class="mission-text">We have transformed current holding chambers into a device that can deliver more medication while fitting comfortably in your pocket!</p>
+                </div>
+                <div class="mission-card">
+                    <h2 class="mission-title">Why we do it</h2>
+                    <p class="mission-text">Chambers are a necessity to make sure inhalers deliver the medication to the lungs, but current designs are bulky, embarrassing and unintuitive!</p>
+                    <p class="mission-quote">"So that patients can focus on what they love in life, and not on what is holding them back."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Features -->
+    <section class="features-section">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">✨</div>
+                    <h3>Efficient</h3>
+                    <p>Delivers more medication with improved design</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Discreet</h3>
+                    <p>Fits comfortably in your pocket</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">👆</div>
+                    <h3>Easy to use</h3>
+                    <p>Intuitive design for better patient experience</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Media -->
+    <section class="media-section" id="media">
+        <div class="container">
+            <h2 class="section-title">Featured Media</h2>
+            <div class="media-grid">
+                <div class="media-card">
+                    <div class="media-badge">Featured</div>
+                    <h3>Hollo Medical recently featured on Global News Halifax</h3>
+                    <a href="#" class="media-link">Read More →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Update -->
+    <section class="updates-section" id="updates">
+        <div class="container">
+            <h2 class="section-title">Featured Update</h2>
+            <div class="update-card featured">
+                <div class="update-badge">Award Winner</div>
+                <h3>Hollo Medical wins Innovation Den's $50,000 Accelerator Award for Health Innovation</h3>
+                <a href="#" class="update-link">Read More →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <h2 class="newsletter-title">Subscribe to our newsletter</h2>
+            <p class="newsletter-subtitle">Stay up to date on the latest Hollo Medical progress</p>
+            <form class="newsletter-form" id="newsletter-form">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit" class="submit-button">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Hollo Medical</h4>
+                    <p>Developing the next generation of inhaler chambers</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links</h4>
+                    <ul>
+                        <li><a href="#updates">Updates</a></li>
+                        <li><a href="#media">Media</a></li>
+                        <li><a href="#team">Team</a></li>
+                        <li><a href="#contact">Join Waitlist</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Get in Touch</h4>
+                    <p>Contact us for more information</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Copyright © 2024 HOLLO medical Inc. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Three.js for 3D model loading -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/OBJLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/MTLLoader.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+

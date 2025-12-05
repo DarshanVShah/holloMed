@@ -103,182 +103,27 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // 3D Model Loader - Ready for .glb file
-class ProductViewer {
-    constructor(containerId) {
-        this.container = document.getElementById(containerId);
-        this.scene = null;
-        this.camera = null;
-        this.renderer = null;
-        this.model = null;
-        this.animationId = null;
-        this.isInitialized = false;
-    }
-
-    init() {
-        if (this.isInitialized || !this.container || typeof THREE === 'undefined') return;
-        
-        // Remove placeholder if it exists
-        const placeholder = this.container.querySelector('.product-placeholder');
-        if (placeholder) {
-            placeholder.style.display = 'none';
-        }
-
-        // Set up Three.js scene
-        const width = this.container.clientWidth;
-        const height = this.container.clientHeight || 500;
-
-        // Scene
-        this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0xF0F8FF);
-
-        // Camera
-        this.camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
-        this.camera.position.set(0, 0, 5);
-
-        // Renderer
-        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        this.renderer.setSize(width, height);
-        this.renderer.setPixelRatio(window.devicePixelRatio);
-        this.renderer.shadowMap.enabled = true;
-        this.container.appendChild(this.renderer.domElement);
-
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-        this.scene.add(ambientLight);
-
-        const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
-        directionalLight1.position.set(5, 5, 5);
-        directionalLight1.castShadow = true;
-        this.scene.add(directionalLight1);
-
-        const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.4);
-        directionalLight2.position.set(-5, -5, -5);
-        this.scene.add(directionalLight2);
-
-        // Add subtle rotation animation for empty scene
-        this.animate();
-        this.isInitialized = true;
-    }
-
-    async loadModel(glbPath) {
-        if (!this.isInitialized) {
-            this.init();
-        }
-
-        if (typeof THREE === 'undefined' || typeof THREE.GLTFLoader === 'undefined') {
-            console.error('Three.js or GLTFLoader not available');
-            return Promise.reject('Three.js or GLTFLoader not available');
-        }
-
-        return new Promise((resolve, reject) => {
-            // Remove existing model
-            if (this.model) {
-                this.scene.remove(this.model);
-            }
-
-            const loader = new THREE.GLTFLoader();
-            loader.load(
-                glbPath,
-                (gltf) => {
-                    const object = gltf.scene;
-                    
-                    // Center and scale the model
-                    const box = new THREE.Box3().setFromObject(object);
-                    const center = box.getCenter(new THREE.Vector3());
-                    const size = box.getSize(new THREE.Vector3());
-                    const maxDim = Math.max(size.x, size.y, size.z);
-                    const scale = 2 / maxDim;
-
-                    object.scale.multiplyScalar(scale);
-                    object.position.sub(center.multiplyScalar(scale));
-
-                    // Enhance materials
-                    object.traverse((child) => {
-                        if (child.isMesh) {
-                            child.castShadow = true;
-                            child.receiveShadow = true;
-                            if (child.material) {
-                                child.material.metalness = 0.3;
-                                child.material.roughness = 0.4;
-                            }
-                        }
-                    });
-
-                    this.model = object;
-                    this.scene.add(object);
-                    resolve(object);
-                },
-                (progress) => {
-                    // Loading progress
-                    if (progress.total > 0) {
-                        const percent = (progress.loaded / progress.total) * 100;
-                        console.log('Loading model:', percent.toFixed(2) + '%');
-                    }
-                },
-                (error) => {
-                    console.error('Error loading GLB model:', error);
-                    reject(error);
-                }
-            );
-        });
-    }
-
-    animate() {
-        this.animationId = requestAnimationFrame(() => this.animate());
-        
-        if (this.model) {
-            this.model.rotation.y += 0.005;
-        }
-        
-        if (this.renderer && this.scene && this.camera) {
-            this.renderer.render(this.scene, this.camera);
-        }
-    }
-
-    onResize() {
-        if (!this.isInitialized || !this.container) return;
-        
-        const width = this.container.clientWidth;
-        const height = this.container.clientHeight || 500;
-        
-        this.camera.aspect = width / height;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize(width, height);
-    }
-}
-
-// Initialize product viewer
-const productViewer = new ProductViewer('product-showcase');
-
-// Handle window resize
-window.addEventListener('resize', () => {
-    if (productViewer) {
-        productViewer.onResize();
-    }
-});
-
-// Auto-load the GLB model on page load
+// Model-viewer event listeners
 document.addEventListener('DOMContentLoaded', () => {
-    if (productViewer && document.getElementById('product-showcase')) {
-        setTimeout(() => {
-            productViewer.init();
-            productViewer.loadModel('assets/RubiksCube.glb').catch(err => {
-                console.error('Error loading 3D model:', err);
-            });
-        }, 100);
+    const modelViewer = document.querySelector('model-viewer');
+    
+    if (modelViewer) {
+        modelViewer.addEventListener('load', () => {
+            console.log('3D model loaded successfully');
+        });
+        
+        modelViewer.addEventListener('error', (event) => {
+            console.error('Error loading 3D model:', event.detail);
+        });
+        
+        modelViewer.addEventListener('ar-status', (event) => {
+            if (event.detail.status === 'not-presenting') {
+                console.log('AR session ended');
+            }
+        });
     }
 });
 
-// Function to load model manually if needed
-// Usage: loadProductModel('path/to/model.glb')
-window.loadProductModel = function(glbPath) {
-    if (productViewer) {
-        productViewer.init();
-        productViewer.loadModel(glbPath).catch(err => {
-            console.error('Error loading 3D model:', err);
-        });
-    }
-};
 
 // CTA Button click handler
 const ctaButton = document.querySelector('.cta-button');

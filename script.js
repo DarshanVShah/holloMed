@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// 3D Model Loader - Ready for .obj file
+// 3D Model Loader - Ready for .glb file
 class ProductViewer {
     constructor(containerId) {
         this.container = document.getElementById(containerId);
@@ -113,7 +113,7 @@ class ProductViewer {
     }
 
     init() {
-        if (this.isInitialized || !this.container) return;
+        if (this.isInitialized || !this.container || typeof THREE === 'undefined') return;
         
         // Remove placeholder if it exists
         const placeholder = this.container.querySelector('.product-placeholder');
@@ -127,7 +127,7 @@ class ProductViewer {
 
         // Scene
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0xf5f7fa);
+        this.scene.background = new THREE.Color(0xF0F8FF);
 
         // Camera
         this.camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
@@ -158,9 +158,14 @@ class ProductViewer {
         this.isInitialized = true;
     }
 
-    async loadModel(objPath, mtlPath = null) {
+    async loadModel(glbPath) {
         if (!this.isInitialized) {
             this.init();
+        }
+
+        if (typeof THREE === 'undefined' || typeof THREE.GLTFLoader === 'undefined') {
+            console.error('Three.js or GLTFLoader not available');
+            return Promise.reject('Three.js or GLTFLoader not available');
         }
 
         return new Promise((resolve, reject) => {
@@ -169,59 +174,51 @@ class ProductViewer {
                 this.scene.remove(this.model);
             }
 
-            const loader = new THREE.OBJLoader();
-            
-            // If MTL file is provided, load it first
-            if (mtlPath && typeof THREE.MTLLoader !== 'undefined') {
-                const mtlLoader = new THREE.MTLLoader();
-                mtlLoader.load(mtlPath, (materials) => {
-                    materials.preload();
-                    loader.setMaterials(materials);
-                    this.loadOBJ(objPath, resolve, reject);
-                }, undefined, reject);
-            } else {
-                this.loadOBJ(objPath, resolve, reject);
-            }
-        });
-    }
+            const loader = new THREE.GLTFLoader();
+            loader.load(
+                glbPath,
+                (gltf) => {
+                    const object = gltf.scene;
+                    
+                    // Center and scale the model
+                    const box = new THREE.Box3().setFromObject(object);
+                    const center = box.getCenter(new THREE.Vector3());
+                    const size = box.getSize(new THREE.Vector3());
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const scale = 2 / maxDim;
 
-    loadOBJ(objPath, resolve, reject) {
-        const loader = new THREE.OBJLoader();
-        loader.load(
-            objPath,
-            (object) => {
-                // Center and scale the model
-                const box = new THREE.Box3().setFromObject(object);
-                const center = box.getCenter(new THREE.Vector3());
-                const size = box.getSize(new THREE.Vector3());
-                const maxDim = Math.max(size.x, size.y, size.z);
-                const scale = 2 / maxDim;
+                    object.scale.multiplyScalar(scale);
+                    object.position.sub(center.multiplyScalar(scale));
 
-                object.scale.multiplyScalar(scale);
-                object.position.sub(center.multiplyScalar(scale));
-
-                // Add material if not present
-                object.traverse((child) => {
-                    if (child.isMesh) {
-                        if (!child.material) {
-                            child.material = new THREE.MeshStandardMaterial({
-                                color: 0x667eea,
-                                metalness: 0.3,
-                                roughness: 0.4
-                            });
+                    // Enhance materials
+                    object.traverse((child) => {
+                        if (child.isMesh) {
+                            child.castShadow = true;
+                            child.receiveShadow = true;
+                            if (child.material) {
+                                child.material.metalness = 0.3;
+                                child.material.roughness = 0.4;
+                            }
                         }
-                        child.castShadow = true;
-                        child.receiveShadow = true;
-                    }
-                });
+                    });
 
-                this.model = object;
-                this.scene.add(object);
-                resolve(object);
-            },
-            undefined,
-            reject
-        );
+                    this.model = object;
+                    this.scene.add(object);
+                    resolve(object);
+                },
+                (progress) => {
+                    // Loading progress
+                    if (progress.total > 0) {
+                        const percent = (progress.loaded / progress.total) * 100;
+                        console.log('Loading model:', percent.toFixed(2) + '%');
+                    }
+                },
+                (error) => {
+                    console.error('Error loading GLB model:', error);
+                    reject(error);
+                }
+            );
+        });
     }
 
     animate() {
@@ -253,16 +250,32 @@ const productViewer = new ProductViewer('product-showcase');
 
 // Handle window resize
 window.addEventListener('resize', () => {
-    productViewer.onResize();
+    if (productViewer) {
+        productViewer.onResize();
+    }
 });
 
-// Function to load model when .obj file is provided
-// Usage: loadProductModel('path/to/model.obj', 'path/to/material.mtl')
-window.loadProductModel = function(objPath, mtlPath = null) {
-    productViewer.init();
-    productViewer.loadModel(objPath, mtlPath).catch(err => {
-        console.error('Error loading 3D model:', err);
-    });
+// Auto-load the GLB model on page load
+document.addEventListener('DOMContentLoaded', () => {
+    if (productViewer && document.getElementById('product-showcase')) {
+        setTimeout(() => {
+            productViewer.init();
+            productViewer.loadModel('assets/RubiksCube.glb').catch(err => {
+                console.error('Error loading 3D model:', err);
+            });
+        }, 100);
+    }
+});
+
+// Function to load model manually if needed
+// Usage: loadProductModel('path/to/model.glb')
+window.loadProductModel = function(glbPath) {
+    if (productViewer) {
+        productViewer.init();
+        productViewer.loadModel(glbPath).catch(err => {
+            console.error('Error loading 3D model:', err);
+        });
+    }
 };
 
 // CTA Button click handler
@@ -275,4 +288,57 @@ if (ctaButton) {
         }
     });
 }
+
+// Waitlist Form Submission
+const waitlistForm = document.getElementById('waitlist-form');
+if (waitlistForm) {
+    waitlistForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+        
+        // Here you would typically send this to a backend
+        console.log('Waitlist submission:', data);
+        
+        // Show success message
+        const button = e.target.querySelector('.submit-button');
+        const originalText = button.textContent;
+        button.textContent = 'Thank You! ✓';
+        button.style.background = '#10b981';
+        button.disabled = true;
+        
+        // Show success message
+        const successMessage = document.createElement('div');
+        successMessage.style.cssText = 'margin-top: 1rem; padding: 1rem; background: #d1fae5; color: #065f46; border-radius: 10px; text-align: center;';
+        successMessage.textContent = 'Thank you for joining our waitlist! We\'ll be in touch soon.';
+        e.target.appendChild(successMessage);
+        
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.style.background = '';
+            button.disabled = false;
+            successMessage.remove();
+            e.target.reset();
+        }, 5000);
+    });
+}
+
+// Animate team members on scroll
+document.addEventListener('DOMContentLoaded', () => {
+    const teamMembers = document.querySelectorAll('.team-member');
+    const teamObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, index * 100);
+                teamObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    teamMembers.forEach(member => {
+        teamObserver.observe(member);
+    });
+});
 

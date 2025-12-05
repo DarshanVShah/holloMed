@@ -340,5 +340,39 @@ document.addEventListener('DOMContentLoaded', () => {
     teamMembers.forEach(member => {
         teamObserver.observe(member);
     });
+
+    // Animate founders and advisory board separately for staggered effect
+    const founders = document.querySelectorAll('.founder');
+    const advisory = document.querySelectorAll('.advisory');
+    
+    const foundersObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, index * 200);
+                foundersObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    founders.forEach(member => {
+        foundersObserver.observe(member);
+    });
+
+    const advisoryObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, index * 150);
+                advisoryObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    advisory.forEach(member => {
+        advisoryObserver.observe(member);
+    });
 });
 

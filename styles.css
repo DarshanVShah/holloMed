@@ -397,16 +397,59 @@ body {
 
 .media-card {
     background: var(--bg-primary);
-    padding: 2.5rem;
+    padding: 0;
     border-radius: 16px;
     border: 1px solid var(--border-color);
     position: relative;
     transition: all 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .media-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
+}
+
+.media-thumbnail {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background: var(--bg-secondary);
+    position: relative;
+}
+
+.media-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.4s ease;
+}
+
+.media-card:hover .media-thumbnail img {
+    transform: scale(1.05);
+}
+
+.media-thumbnail iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.thumbnail-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--light-blue), var(--lighter-blue));
+    color: var(--primary-color);
+}
+
+.media-card-content {
+    padding: 2rem;
 }
 
 .media-badge {
@@ -419,13 +462,31 @@ body {
     border-radius: 6px;
     font-size: 0.75rem;
     font-weight: 600;
+    z-index: 10;
+}
+
+.media-date {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.media-source {
+    font-size: 0.875rem;
+    color: var(--primary-color);
+    font-weight: 500;
+    margin: 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .media-card h3 {
     font-size: 1.25rem;
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin: 0 0 1rem;
     color: var(--text-primary);
+    line-height: 1.4;
 }
 
 .media-link {
@@ -433,10 +494,13 @@ body {
     text-decoration: none;
     font-weight: 500;
     transition: all 0.3s ease;
+    margin-top: 1rem;
+    display: inline-block;
 }
 
 .media-link:hover {
     color: var(--secondary-color);
+    transform: translateX(4px);
 }
 
 /* Updates Section */
@@ -854,6 +918,10 @@ html {
 
 .featured-media {
     grid-column: 1 / -1;
+}
+
+.featured-media .media-thumbnail {
+    height: 350px;
 }
 
 /* Team Page */

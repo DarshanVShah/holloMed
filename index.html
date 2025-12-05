@@ -7,18 +7,21 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">Hollo Medical</div>
+            <a href="index.html" class="logo">
+                <img src="assets/hollo-logo.png" alt="Hollo Medical Logo">
+                <span>Hollo Medical</span>
+            </a>
             <ul class="nav-menu">
-                <li><a href="#updates">Updates</a></li>
-                <li><a href="#media">Media</a></li>
-                <li><a href="#team">Team</a></li>
-                <li><a href="#contact" class="nav-cta">Join Waitlist</a></li>
+                <li><a href="updates.html">Updates</a></li>
+                <li><a href="media.html">Media</a></li>
+                <li><a href="team.html">Team</a></li>
+                <li><a href="waitlist.html" class="nav-cta">Join Waitlist</a></li>
             </ul>
             <button class="mobile-menu-toggle" aria-label="Toggle menu">
                 <span></span>
@@ -86,17 +89,31 @@
         <div class="container">
             <div class="features-grid">
                 <div class="feature-item">
-                    <div class="feature-icon">✨</div>
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                        </svg>
+                    </div>
                     <h3>Efficient</h3>
                     <p>Delivers more medication with improved design</p>
                 </div>
                 <div class="feature-item">
-                    <div class="feature-icon">🔒</div>
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </div>
                     <h3>Discreet</h3>
                     <p>Fits comfortably in your pocket</p>
                 </div>
                 <div class="feature-item">
-                    <div class="feature-icon">👆</div>
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                    </div>
                     <h3>Easy to use</h3>
                     <p>Intuitive design for better patient experience</p>
                 </div>
@@ -112,8 +129,11 @@
                 <div class="media-card">
                     <div class="media-badge">Featured</div>
                     <h3>Hollo Medical recently featured on Global News Halifax</h3>
-                    <a href="#" class="media-link">Read More →</a>
+                    <a href="media.html" class="media-link">Read More →</a>
                 </div>
+            </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="media.html" class="cta-button" style="display: inline-block;">View All Media</a>
             </div>
         </div>
     </section>
@@ -125,7 +145,10 @@
             <div class="update-card featured">
                 <div class="update-badge">Award Winner</div>
                 <h3>Hollo Medical wins Innovation Den's $50,000 Accelerator Award for Health Innovation</h3>
-                <a href="#" class="update-link">Read More →</a>
+                <a href="updates.html" class="update-link">Read More →</a>
+            </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="updates.html" class="cta-button" style="display: inline-block;">View All Updates</a>
             </div>
         </div>
     </section>
@@ -147,16 +170,16 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h4>Hollo Medical</h4>
+                    <img src="assets/hollo-logo2.png" alt="Hollo Medical" style="height: 40px; margin-bottom: 1rem;">
                     <p>Developing the next generation of inhaler chambers</p>
                 </div>
                 <div class="footer-section">
                     <h4>Links</h4>
                     <ul>
-                        <li><a href="#updates">Updates</a></li>
-                        <li><a href="#media">Media</a></li>
-                        <li><a href="#team">Team</a></li>
-                        <li><a href="#contact">Join Waitlist</a></li>
+                        <li><a href="updates.html">Updates</a></li>
+                        <li><a href="media.html">Media</a></li>
+                        <li><a href="team.html">Team</a></li>
+                        <li><a href="waitlist.html">Join Waitlist</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -172,8 +195,7 @@
 
     <!-- Three.js for 3D model loading -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/OBJLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/MTLLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/GLTFLoader.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
